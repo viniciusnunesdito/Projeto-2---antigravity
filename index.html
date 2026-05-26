@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TODO_SYS // Gerenciador de Tarefas</title>
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Outfit (Títulos) e JetBrains Mono (Código/Tech) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        brand: {
+                            orange: '#f97316',
+                            orangeHover: '#ea580c',
+                            darkBg: '#0f172a',
+                            cardBg: '#1e293b',
+                            border: '#334155',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Estilos adicionais para o Grid de Linhas do Cyberpunk Suíço */
+        .bg-grid {
+            background-size: 40px 40px;
+            background-image: 
+                linear-gradient(to right, rgba(51, 65, 85, 0.15) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(51, 65, 85, 0.15) 1px, transparent 1px);
+        }
+        /* Custom scrollbar para o visual retro-futurista */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 0px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #f97316;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-brand-darkBg text-slate-100 font-sans bg-grid overflow-x-hidden flex flex-col md:flex-row relative">
+
+    <!-- Painel Lateral Assimétrico (Visual Swiss Cyberpunk Brutalism) -->
+    <aside class="hidden md:flex md:w-[35%] lg:w-[30%] bg-slate-950 border-r-2 border-brand-orange p-10 flex-col justify-between select-none relative overflow-hidden shrink-0">
+        <!-- Detalhe decorativo estético -->
+        <div class="absolute top-0 right-0 w-32 h-32 bg-brand-orange/5 blur-3xl pointer-events-none"></div>
+        
+        <div>
+            <!-- Status do Terminal e Branding -->
+            <div class="flex items-center space-x-2 text-xs font-mono text-brand-orange mb-12">
+                <span class="inline-block w-2.5 h-2.5 bg-brand-orange animate-pulse"></span>
+                <span>SYS_STATUS: ONLINE</span>
+            </div>
+            
+            <!-- Título Monumental Quebrado -->
+            <h1 class="text-6xl font-extrabold tracking-tighter leading-none text-slate-50 uppercase">
+                Todo<br>
+                <span class="text-brand-orange">_Sys.</span>
+            </h1>
+            <p class="mt-4 text-sm font-mono text-slate-400 max-w-[200px]">
+                [VERSÃO_2.0.2] // SISTEMA ASSIMÉTRICO DE ALTA PRODUTIVIDADE. CANTOS RETOS, FOCO BRUTO.
+            </p>
+        </div>
+
+        <!-- Rodapé do Painel Lateral -->
+        <div class="font-mono text-[10px] text-slate-500 space-y-1">
+            <p>// PROJETO DE CÓDIGO VANILLA PURÍSSIMO</p>
+            <p>// SEM DEPENDÊNCIAS // SEM COMPLICAÇÕES</p>
+            <p>© 2026 ANTIGRAVITY_INC. TODOS OS DIREITOS RESERVADOS.</p>
+        </div>
+    </aside>
+
+    <!-- Área Principal de Conteúdo -->
+    <main class="flex-1 flex items-center justify-center p-6 md:p-12 relative min-h-screen">
+        <div class="w-full max-w-2xl relative z-10">
+
+            <!-- Título Mobile (só aparece em telas pequenas) -->
+            <div class="md:hidden text-center mb-8">
+                <h1 class="text-4xl font-extrabold tracking-tighter text-slate-50 uppercase">
+                    Todo<span class="text-brand-orange">_Sys.</span>
+                </h1>
+                <p class="text-xs font-mono text-slate-400 mt-1">// GERENCIADOR DE TAREFAS</p>
+            </div>
+
+            <!-- TELA 1: LOGIN -->
+            <section id="screen-login" class="bg-brand-cardBg/90 border border-brand-border backdrop-blur-md p-8 md:p-10 shadow-2xl relative transition-all duration-300 w-full max-w-md mx-auto">
+                <!-- Tarja estética decorativa superior -->
+                <div class="absolute top-0 left-0 right-0 h-[2px] bg-brand-orange"></div>
+                
+                <header class="mb-8">
+                    <span class="text-xs font-mono text-brand-orange uppercase tracking-wider">// AUTENTICAÇÃO SECUNDÁRIA</span>
+                    <h2 class="text-3xl font-extrabold tracking-tight text-white uppercase mt-1">Entrar no Sistema</h2>
+                </header>
+
+                <!-- Feedback Geral de Erro -->
+                <div id="login-error-general" class="hidden mb-6 p-4 bg-red-950/50 border-l-2 border-red-500 text-red-200 text-sm font-mono flex items-start space-x-2">
+                    <svg class="w-5 h-5 text-red-500 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                    <span id="login-error-general-text"></span>
+                </div>
+
+                <!-- Feedback Geral de Sucesso (ex. após cadastro) -->
+                <div id="login-success-general" class="hidden mb-6 p-4 bg-emerald-950/50 border-l-2 border-emerald-500 text-emerald-200 text-sm font-mono flex items-start space-x-2">
+                    <svg class="w-5 h-5 text-emerald-500 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    <span id="login-success-general-text"></span>
+                </div>
+
+                <form id="form-login" class="space-y-6" novalidate>
+                    <!-- Campo E-mail -->
+                    <div class="space-y-1">
+                        <label for="login-email" class="block text-xs font-mono uppercase text-slate-400 tracking-wider">Endereço de E-mail</label>
+                        <input type="email" id="login-email" class="w-full bg-slate-900 border border-brand-border px-4 py-3 text-slate-100 focus:outline-none focus:border-brand-orange font-mono text-sm transition-colors rounded-none placeholder-slate-600" placeholder="usuario@email.com">
+                        <span id="login-email-error" class="hidden text-xs text-red-400 font-mono mt-1 block"></span>
+                    </div>
+
+                    <!-- Campo Senha -->
+                    <div class="space-y-1">
+                        <div class="flex justify-between items-center">
+                            <label for="login-password" class="block text-xs font-mono uppercase text-slate-400 tracking-wider">Chave de Acesso</label>
+                        </div>
+                        <input type="password" id="login-password" class="w-full bg-slate-900 border border-brand-border px-4 py-3 text-slate-100 focus:outline-none focus:border-brand-orange font-mono text-sm transition-colors rounded-none placeholder-slate-600" placeholder="••••••••">
+                        <span id="login-password-error" class="hidden text-xs text-red-400 font-mono mt-1 block"></span>
+                    </div>
+
+                    <!-- Botão de Ação -->
+                    <button type="submit" class="w-full bg-brand-orange hover:bg-brand-orangeHover text-white font-bold py-3.5 uppercase tracking-wider text-sm transition-all duration-300 active:scale-[0.98] rounded-none focus:outline-none">
+                        Autenticar Acesso
+                    </button>
+                </form>
+
+                <footer class="mt-8 pt-6 border-t border-slate-800 text-center">
+                    <p class="text-sm text-slate-400">
+                        Novo no sistema? 
+                        <button id="btn-go-to-register" class="text-brand-orange hover:text-brand-orangeHover font-semibold transition-colors focus:outline-none underline underline-offset-4 ml-1">
+                            Crie sua conta corporativa
+                        </button>
+                    </p>
+                </footer>
+            </section>
+
+            <!-- TELA 2: CADASTRO -->
+            <section id="screen-register" class="hidden bg-brand-cardBg/90 border border-brand-border backdrop-blur-md p-8 md:p-10 shadow-2xl relative transition-all duration-300 w-full max-w-md mx-auto">
+                <!-- Tarja estética decorativa superior -->
+                <div class="absolute top-0 left-0 right-0 h-[2px] bg-brand-orange"></div>
+
+                <header class="mb-8">
+                    <span class="text-xs font-mono text-brand-orange uppercase tracking-wider">// NOVO CADASTRO DE OPERADOR</span>
+                    <h2 class="text-3xl font-extrabold tracking-tight text-white uppercase mt-1">Criar Conta</h2>
+                </header>
+
+                <form id="form-register" class="space-y-6" novalidate>
+                    <!-- Campo Nome Completo -->
+                    <div class="space-y-1">
+                        <label for="register-name" class="block text-xs font-mono uppercase text-slate-400 tracking-wider">Nome do Operador</label>
+                        <input type="text" id="register-name" class="w-full bg-slate-900 border border-brand-border px-4 py-3 text-slate-100 focus:outline-none focus:border-brand-orange font-mono text-sm transition-colors rounded-none placeholder-slate-600" placeholder="ex. Major John Doe">
+                        <span id="register-name-error" class="hidden text-xs text-red-400 font-mono mt-1 block"></span>
+                    </div>
+
+                    <!-- Campo E-mail -->
+                    <div class="space-y-1">
+                        <label for="register-email" class="block text-xs font-mono uppercase text-slate-400 tracking-wider">Endereço de E-mail</label>
+                        <input type="email" id="register-email" class="w-full bg-slate-900 border border-brand-border px-4 py-3 text-slate-100 focus:outline-none focus:border-brand-orange font-mono text-sm transition-colors rounded-none placeholder-slate-600" placeholder="operador@email.com">
+                        <span id="register-email-error" class="hidden text-xs text-red-400 font-mono mt-1 block"></span>
+                    </div>
+
+                    <!-- Campo Senha -->
+                    <div class="space-y-1">
+                        <label for="register-password" class="block text-xs font-mono uppercase text-slate-400 tracking-wider">Chave de Acesso</label>
+                        <input type="password" id="register-password" class="w-full bg-slate-900 border border-brand-border px-4 py-3 text-slate-100 focus:outline-none focus:border-brand-orange font-mono text-sm transition-colors rounded-none placeholder-slate-600" placeholder="Mínimo 6 caracteres">
+                        <span id="register-password-error" class="hidden text-xs text-red-400 font-mono mt-1 block"></span>
+                    </div>
+
+                    <!-- Botão de Ação -->
+                    <button type="submit" class="w-full bg-brand-orange hover:bg-brand-orangeHover text-white font-bold py-3.5 uppercase tracking-wider text-sm transition-all duration-300 active:scale-[0.98] rounded-none focus:outline-none">
+                        Registrar no Banco de Dados
+                    </button>
+                </form>
+
+                <footer class="mt-8 pt-6 border-t border-slate-800 text-center">
+                    <p class="text-sm text-slate-400">
+                        Já possui uma credencial? 
+                        <button id="btn-go-to-login" class="text-brand-orange hover:text-brand-orangeHover font-semibold transition-colors focus:outline-none underline underline-offset-4 ml-1">
+                            Acessar o terminal
+                        </button>
+                    </p>
+                </footer>
+            </section>
+
+            <!-- TELA 3: DASHBOARD (LOGADO) -->
+            <section id="screen-dashboard" class="hidden bg-brand-cardBg/90 border border-brand-border backdrop-blur-md shadow-2xl relative w-full transition-all duration-300">
+                <!-- Tarja estética decorativa superior -->
+                <div class="absolute top-0 left-0 right-0 h-[2px] bg-brand-orange"></div>
+
+                <!-- Cabeçalho do Painel Logado (Header) -->
+                <header class="p-6 border-b border-brand-border flex justify-between items-center gap-4">
+                    <div class="space-y-0.5">
+                        <div class="flex items-center space-x-1.5">
+                            <span class="w-2 h-2 bg-emerald-500 rounded-none inline-block"></span>
+                            <span class="text-[10px] font-mono text-emerald-400 uppercase tracking-wider">CONEXÃO_OPERACIONAL</span>
+                        </div>
+                        <h2 id="dashboard-user-name" class="text-2xl font-extrabold tracking-tight text-white uppercase leading-tight">Olá, [Operador]</h2>
+                    </div>
+
+                    <!-- Botão de Sair -->
+                    <button id="btn-logout" class="border border-red-500/50 hover:bg-red-500/10 text-red-400 font-mono text-xs font-bold py-2 px-4 uppercase tracking-wider transition-colors focus:outline-none rounded-none flex items-center space-x-1">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+                        <span>Sair</span>
+                    </button>
+                </header>
+
+                <div class="p-6 space-y-8">
+                    <!-- Formulário de Criação de Tarefa -->
+                    <form id="form-add-todo" class="space-y-4 bg-slate-950/60 border border-brand-border p-5 rounded-none" novalidate>
+                        <header class="pb-2 border-b border-slate-800">
+                            <span class="text-xs font-mono text-brand-orange uppercase tracking-wider block">// REGISTRAR DIRETRIZ</span>
+                        </header>
+
+                        <!-- Título da Tarefa (Obrigatório) -->
+                        <div class="space-y-1">
+                            <label for="todo-title" class="block text-xs font-mono uppercase text-slate-400 tracking-wider">Título da Tarefa *</label>
+                            <input type="text" id="todo-title" class="w-full bg-slate-900 border border-brand-border px-4 py-2.5 text-slate-100 focus:outline-none focus:border-brand-orange font-mono text-sm transition-colors rounded-none placeholder-slate-700" placeholder="ex. Revisar relatórios de segurança">
+                            <span id="todo-title-error" class="hidden text-xs text-red-400 font-mono mt-1 block"></span>
+                        </div>
+
+                        <!-- Tipo da Tarefa (Trabalho, Pessoal, Estudos) -->
+                        <div class="space-y-1">
+                            <label for="todo-type" class="block text-xs font-mono uppercase text-slate-400 tracking-wider">Tipo da Tarefa</label>
+                            <select id="todo-type" class="w-full bg-slate-900 border border-brand-border px-4 py-2.5 text-slate-100 focus:outline-none focus:border-brand-orange font-mono text-sm transition-colors rounded-none">
+                                <option value="Trabalho">Trabalho</option>
+                                <option value="Pessoal">Pessoal</option>
+                                <option value="Estudos">Estudos</option>
+                            </select>
+                        </div>
+
+                        <!-- Descrição da Tarefa (Opcional) -->
+                        <div class="space-y-1">
+                            <label for="todo-description" class="block text-xs font-mono uppercase text-slate-400 tracking-wider">Descrição (Opcional)</label>
+                            <textarea id="todo-description" rows="3" class="w-full bg-slate-900 border border-brand-border px-4 py-2.5 text-slate-100 focus:outline-none focus:border-brand-orange font-mono text-sm transition-colors rounded-none placeholder-slate-700 resize-none" placeholder="Detalhes ou metas específicas..."></textarea>
+                        </div>
+
+                        <!-- Botão de Envio -->
+                        <div class="flex justify-end pt-2">
+                            <button type="submit" class="w-full sm:w-auto bg-brand-orange hover:bg-brand-orangeHover text-white font-bold py-2.5 px-6 uppercase tracking-wider text-xs transition-all duration-300 active:scale-[0.98] rounded-none focus:outline-none flex items-center justify-center space-x-1.5">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                                <span>Adicionar Tarefa</span>
+                            </button>
+                        </div>
+                    </form>
+
+                    <!-- Seção de Listagem de Tarefas -->
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center pb-2 border-b border-brand-border">
+                            <span class="text-xs font-mono text-slate-400 uppercase tracking-wider">// DIRETRIZES DO OPERADOR</span>
+                            <div class="text-xs font-mono text-slate-400 uppercase">
+                                Total: <span id="todo-counter" class="text-brand-orange font-bold">0</span>
+                            </div>
+                        </div>
+
+                        <!-- Lista de Cards das Tarefas -->
+                        <div id="todo-list" class="grid grid-cols-1 gap-3 max-h-[400px] overflow-y-auto pr-1">
+                            <!-- Injetado via Javascript -->
+                        </div>
+
+                        <!-- Estado Vazio -->
+                        <div id="todo-empty-state" class="hidden py-10 text-center font-mono text-xs text-slate-500 border border-dashed border-slate-800">
+                            Nenhuma tarefa cadastrada ainda.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Rodapé Técnico -->
+                <footer class="p-4 bg-slate-950/80 border-t border-brand-border flex justify-between items-center text-[10px] font-mono text-slate-500">
+                    <div>PERSISTÊNCIA: LOCAL_STORAGE</div>
+                    <div>STATUS: ONLINE</div>
+                </footer>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- Script Principal -->
+    <script src="app.js"></script>
+</body>
+</html>
